@@ -1,13 +1,25 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <style>
+            body {background-color: black;}
+            input, p   {color: white;}
+            </style>
         <title>Matt App</title>
     </head>
     <body>
-        <input type="text" id="code">
-        <input type="file" id="image">
-        <button type="button" onclick="activate(code, image)">UPLOAD</button>
-        
+        <div>
+            <p>Insert Auth Code:</p>
+            <input type="text" id="code">
+            <p>Select Image to upload:</p>
+            <input type="file" id="image">
+            <p>Select Destination Folder</p>
+            <input type="text" id="destination">
+            <p></p>
+        </div>
+        <div>
+            <button type="button" onclick="activate(code, destination)">UPLOAD IMAGE</button>
+        </div>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script src="./src/button.js"></script>
     </body>

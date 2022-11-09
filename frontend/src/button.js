@@ -1,11 +1,12 @@
-const CMS_URI = "//localhost:1337/api/";
+const CMS_URI = "//192.168.0.18:1337/api/";
 
-const POST_IMAGE = (token) => AUTH_POST("upload", token);
+const POST_IMAGE = (token, destination) => AUTH_POST("upload/" + destination, token);
 const GET_TOKEN = code => AUTH_GET("auth/local", code);
 
-async function AUTH_POST(url, token) {
+async function AUTH_POST(url, token,) {
     const form = new FormData();
     const selectedFile = document.getElementById('image').files[0];
+    console.log(selectedFile.type)
     form.append('files', selectedFile)
     try {
         console.log(form)
@@ -32,9 +33,14 @@ async function AUTH_GET(url, code) {
     }
 }
 
-function activate(code) {
-    console.log(code.value)
-    GET_TOKEN(code.value).then(response => {
-        POST_IMAGE(response.data.jwt).then(res => console.log(res))
-    })
+function activate(code, destination) {
+    const selectedFile = document.getElementById('image').files[0];
+    if(selectedFile.type.includes("image")) {
+        GET_TOKEN(code.value).then(response => {
+            console.log(destination.value)
+            POST_IMAGE(response.data.jwt, destination.value).then(res => console.log(res))
+        })
+    } else {
+        console.log("NOT AN IMAGE")
+    }
 }
