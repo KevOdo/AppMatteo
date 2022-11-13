@@ -60,10 +60,19 @@ function activate(code, destination) {
 
     if(selectedFile.type.includes("image")) {
         GET_TOKEN(code.value).then(response => {
-            POST_IMAGE(response.data.jwt, image).then(res => console.log(res))
+            var wp = document.getElementById("wrong_password");
+            if(response.response) {
+                if(response.response.status == 400){
+                    wp.textContent = "Password Errata"
+                }
+            } else {
+                wp.textContent = ""
+                POST_IMAGE(response.data.jwt, image).then(res => {
+                    console.log(res)
+                })
+            }
         })
     } else {
         console.log("NOT AN IMAGE")
-        //SEND_SERVER().then(response => console.log("response: " + response));  
     }
 }

@@ -21,6 +21,9 @@ body {
 #form_elements {
     padding: 10px;
 }
+#wrong_passwo   rd {
+    color: red;
+}
 .button {
     border-radius: 10%;
     margin-top: 10px;
