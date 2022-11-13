@@ -5,6 +5,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: 'Roboto', sans-serif;
 }
 #form {
     background-color: #FFFFFF;
@@ -39,7 +40,7 @@ body {
     content: "";
     background: #f1f1f1;
     display: block;
-    position: absolute;
+    position: absolute; 
     padding-top: 300%;
     padding-left: 350%;
     margin-left: -20px !important;
