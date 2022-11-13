@@ -1,5 +1,8 @@
 const CMS_URI = "//formula3e14.redirectme.net:1337/api/";
 
+var wp = document.getElementById("wrong_password");
+var modal = document.getElementById("success_modal");
+
 const POST_IMAGE = (token, image) => AUTH_POST("upload", token, image);
 const GET_TOKEN = code => AUTH_GET("auth/local", code);
 
@@ -13,7 +16,7 @@ async function AUTH_POST(url, token, image) {
         }});
         return response;
     } catch (error) {
-        return error;
+        return error.response;
     }
 }
 
@@ -26,16 +29,7 @@ async function AUTH_GET(url, code) {
         const response = await axios.post(CMS_URI + url, form);
         return response;
     } catch (error) {
-        return error;
-    }
-}
-
-async function SEND_SERVER() {
-    try {
-        const response = await axios.post("./", "hello");
-        return response;
-    } catch (error) {
-        return error;
+        return error.response;
     }
 }
 
@@ -54,25 +48,33 @@ const createFile = (bits, name, options) => {
 
 function activate(code, destination) {
     const selectedFile = document.getElementById('image').files[0];
+
     tmp = destination.value + selectedFile.name;
 
     const image = createFile([selectedFile], tmp, {type: selectedFile.type});
 
     if(selectedFile.type.includes("image")) {
         GET_TOKEN(code.value).then(response => {
-            var wp = document.getElementById("wrong_password");
-            if(response.response) {
-                if(response.response.status == 400){
-                    wp.textContent = "Password Errata"
-                }
+            if(response.status == 400) {
+                wp.textContent = "Password Errata"
             } else {
                 wp.textContent = ""
                 POST_IMAGE(response.data.jwt, image).then(res => {
-                    console.log(res)
+                    console.log(res.status)
+                    if(res.status == 200) {
+                        modal.style.display = "block"
+                        modal.style.display = "flex"
+                    }
                 })
             }
         })
     } else {
         console.log("NOT AN IMAGE")
+    }
+}
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none"
     }
 }
