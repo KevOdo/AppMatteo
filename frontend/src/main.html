@@ -1,25 +1,105 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 height=device-height"> 
         <style>
-            body {background-color: black;}
-            input, p   {color: white;}
-            </style>
+            body {
+                background-image: url("./src/background.png");
+                background-size: cover;
+                height: 98vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            #form {
+                background-color: #FFFFFF;
+            }
+            #form_header {
+                background-color: #04AA6D;
+                padding: 14px 28px;
+                font-size: 16px;
+                display: block;
+                text-align: center;
+                color: #FFFFFF;
+            }
+            #form_elements {
+                padding: 10px;
+            }
+            .button {
+                border-radius: 10%;
+                margin-top: 10px;
+                position: relative;
+                background-color: #04AA6D;
+                border: none;
+                font-size: 16px;
+                color: #FFFFFF;
+                text-align: center;
+                padding: 10px;
+                transition-duration: 0.4s;
+                text-decoration: none;
+                overflow: hidden;
+                cursor: pointer;
+            }
+            .button:after {
+                content: "";
+                background: #f1f1f1;
+                display: block;
+                position: absolute;
+                padding-top: 300%;
+                padding-left: 350%;
+                margin-left: -20px !important;
+                margin-top: -120%;
+                opacity: 0;
+                transition: all 0.8s
+            }
+            .button:active:after {
+                padding: 0;
+                margin: 0;
+                opacity: 1;
+                transition: 0s
+            }
+            #centered {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+            }
+        </style>
         <title>Matt App</title>
     </head>
     <body>
-        <div>
-            <p>Insert Auth Code:</p>
-            <input type="text" id="code">
-            <p>Select Image to upload:</p>
-            <input type="file" id="image">
-            <p>Select Destination Folder</p>
-            <input type="text" id="destination">
-            <p></p>
-        </div>
-        <div>
-            <button type="button" onclick="activate(code, destination)">UPLOAD IMAGE</button>
-        </div>
+        <table id="form" cellspacing="0" cellpaddin="0">
+            <tbody>
+                <tr>
+                    <td id="form_header">
+                        CARICA IMMAGINE
+                    </td>
+                </tr>
+                <tr>
+                    <td id="form_elements">
+                        <div>
+                            <div>
+                                <input type="text" id="code" placeholder="Password">
+                            </div>
+                            <p></p>
+                            <div>
+                                <select name="destination" id="destination">
+                                    <option value="zerobranco">Zero Branco</option>
+                                    <option value="salzano">Salzano</option>
+                                </select>
+                            </div>
+                            <div>
+                                <p>Seleziona Immagine:</p>
+                                <input type="file" id="image" >
+                            </div>
+                        </div>
+                        <div id="centered">
+                            <button class="button" onclick="activate(code, destination)">UPLOAD IMAGE</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script src="./src/button.js"></script>
     </body>
