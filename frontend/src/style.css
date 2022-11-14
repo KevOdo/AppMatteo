@@ -21,6 +21,9 @@ body {
 #form_elements {
     padding: 10px;
 }
+#no_file {
+    color: red;
+}
 #wrong_password {
     color: red;
 }

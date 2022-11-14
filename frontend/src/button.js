@@ -1,6 +1,7 @@
 const CMS_URI = "//formula3e14.redirectme.net:1337/api/";
 
 var wp = document.getElementById("wrong_password");
+var nf = document.getElementById("no_file");
 var modal = document.getElementById("success_modal");
 
 const POST_IMAGE = (token, image) => AUTH_POST("upload", token, image);
@@ -49,28 +50,41 @@ const createFile = (bits, name, options) => {
 function activate(code, destination) {
     const selectedFile = document.getElementById('image').files[0];
 
-    tmp = destination.value + selectedFile.name;
+    if(selectedFile) {
+        nf.textContent = "";
+        tmp = destination.value + selectedFile.name;
+        const image = createFile([selectedFile], tmp, {type: selectedFile.type});
 
-    const image = createFile([selectedFile], tmp, {type: selectedFile.type});
-
-    if(selectedFile.type.includes("image")) {
-        GET_TOKEN(code.value).then(response => {
-            if(response.status == 400) {
-                wp.textContent = "Password Errata"
-            } else {
-                wp.textContent = ""
-                POST_IMAGE(response.data.jwt, image).then(res => {
-                    console.log(res.status)
-                    if(res.status == 200) {
-                        modal.style.display = "block"
-                        modal.style.display = "flex"
-                    }
-                })
-            }
-        })
+        if(selectedFile.type.includes("image")) {
+            GET_TOKEN(code.value).then(response => {
+                if(response.status == 400) {
+                    wp.textContent = "Password Errata"
+                } else {
+                    wp.textContent = ""
+                    POST_IMAGE(response.data.jwt, image).then(res => {
+                        console.log(res.status)
+                        if(res.status == 200) {
+                            clearInputs();
+                            modal.style.display = "block"
+                            modal.style.display = "flex"
+                        }
+                    })
+                }
+            })
+        } else {
+            console.log("NOT AN IMAGE")
+            nf.textContent = "Seleziona un'immagine"
+        }
     } else {
-        console.log("NOT AN IMAGE")
-    }
+        nf.textContent = "Seleziona un'immagine"
+    }    
+}
+
+function clearInputs() {
+    var code = document.getElementById("code");
+    var image = document.getElementById("image");
+    code.value = "";
+    image.value = "";
 }
 
 window.onclick = function(event) {
