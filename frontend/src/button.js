@@ -2,7 +2,8 @@ const CMS_URI = "//formula3e14.redirectme.net:1337/api/";
 
 var wp = document.getElementById("wrong_password");
 var nf = document.getElementById("no_file");
-var modal = document.getElementById("success_modal");
+var success_modal = document.getElementById("success_modal");
+var loading_modal = document.getElementById("loading_modal");
 
 const POST_IMAGE = (token, image) => AUTH_POST("upload", token, image);
 const GET_TOKEN = code => AUTH_GET("auth/local", code);
@@ -58,25 +59,27 @@ function activate(code, destination) {
         if(selectedFile.type.includes("image")) {
             GET_TOKEN(code.value).then(response => {
                 if(response.status == 400) {
-                    wp.textContent = "Password Errata"
+                    wp.textContent = "Password Errata";
                 } else {
                     wp.textContent = ""
+                    loading_modal.style.display = "block";
+                    loading_modal.style.display = "flex";
                     POST_IMAGE(response.data.jwt, image).then(res => {
                         console.log(res.status)
                         if(res.status == 200) {
                             clearInputs();
-                            modal.style.display = "block"
-                            modal.style.display = "flex"
+                            loading_modal.style.display = "none";
+                            success_modal.style.display = "block";
+                            success_modal.style.display = "flex";
                         }
                     })
                 }
             })
         } else {
-            console.log("NOT AN IMAGE")
-            nf.textContent = "Seleziona un'immagine"
+            nf.textContent = "Seleziona un'immagine";
         }
     } else {
-        nf.textContent = "Seleziona un'immagine"
+        nf.textContent = "Seleziona un'immagine";
     }    
 }
 
@@ -88,7 +91,7 @@ function clearInputs() {
 }
 
 window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none"
+    if (event.target == success_modal) {
+        success_modal.style.display = "none";
     }
 }
