@@ -1,4 +1,4 @@
-const CMS_URI = "//formula3e14.redirectme.net:1337/api/";
+const CMS_URI = "//formula3e14.redirectme.net/strapi/api/";
 
 var wp = document.getElementById("wrong_password");
 var nf = document.getElementById("no_file");
@@ -60,12 +60,11 @@ function activate(code, destination) {
             GET_TOKEN(code.value).then(response => {
                 if(response.status == 400) {
                     wp.textContent = "Password Errata";
-                } else {
+                } else if (response.status == 200){
                     wp.textContent = ""
                     loading_modal.style.display = "block";
                     loading_modal.style.display = "flex";
                     POST_IMAGE(response.data.jwt, image).then(res => {
-                        console.log(res.status)
                         if(res.status == 200) {
                             clearInputs();
                             loading_modal.style.display = "none";
