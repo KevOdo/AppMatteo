@@ -1,7 +1,8 @@
-const CMS_URI = "//formula3e14.redirectme.net/strapi/api/";
+const CMS_URI = "https://formula3e14.redirectme.net/strapi/api/";
 
 var wp = document.getElementById("wrong_password");
 var nf = document.getElementById("no_file");
+var fsz = document.getElementById("file_size");
 var success_modal = document.getElementById("success_modal");
 var loading_modal = document.getElementById("loading_modal");
 
@@ -52,6 +53,7 @@ function activate(code, destination) {
     const selectedFile = document.getElementById('image').files[0];
 
     if(selectedFile) {
+        fsz.textContent = "";
         nf.textContent = "";
         tmp = destination.value + selectedFile.name;
         const image = createFile([selectedFile], tmp, {type: selectedFile.type});
@@ -65,7 +67,10 @@ function activate(code, destination) {
                     loading_modal.style.display = "block";
                     loading_modal.style.display = "flex";
                     POST_IMAGE(response.data.jwt, image).then(res => {
-                        if(res.status == 200) {
+                        if(res.status == 413) {
+                            loading_modal.style.display = "none";
+                            fsz = "Errore: immagine troppo pesante!";    
+                        } else if(res.status == 200) {
                             clearInputs();
                             loading_modal.style.display = "none";
                             success_modal.style.display = "block";
@@ -75,7 +80,7 @@ function activate(code, destination) {
                 }
             })
         } else {
-            nf.textContent = "Seleziona un'immagine";
+            nf.textContent = "Errore: il file che stai provando a caricare non è un'immagine";
         }
     } else {
         nf.textContent = "Seleziona un'immagine";
